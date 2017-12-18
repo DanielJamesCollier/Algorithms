@@ -10,27 +10,16 @@ using namespace std::chrono_literals;
 //----------------------
 template<std::size_t size>
 void
-insertion_sort(std::array<int, size> &array) {
-    for (decltype(size) i = 1; i < size; ++i) {
-        int j = i - 1;
-        int current = array[i];
-        
-        while (i > 0 && current < array[j]) {
-            array[j + 1] = array[j];
-            j--;
+bubble_sort(std::array<int, size> &array) {
+    for (decltype(size) i = 0; i < size - 1; ++i) {
+        for (decltype(size) j = 0; j < size - i - 1; ++j) {
+            if (array[j] > array[j + 1]) {
+                auto temp = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = temp;
+            }
         }
-        array[j + 1] = current;
     }
-}
-
-//----------------------
-template<std::size_t size>
-void
-print_array(std::array<int, size> &array) {
-    for (auto &i : array) {
-        std::cout << i << " ";
-    }
-    std::cout << '\n';
 }
 
 //----------------------
@@ -38,6 +27,15 @@ template<std::size_t size>
 void
 fill_array_with_rand(std::array<int, size> &array) {
     for (auto &i : array) {
+        i = rand() % 100;
+    }
+}
+
+//----------------------
+template<std::size_t size>
+void
+fill_array_with_rand(std::array<int, size> &array) {
+    for (auto & i : array) {
         i = rand() % 100;
     }
 }
@@ -62,7 +60,7 @@ main() {
     fill_array_with_rand(array);
     
     auto start = std::chrono::high_resolution_clock::now();
-    insertion_sort(array);
+    bubble_sort(array);
     auto end = std::chrono::high_resolution_clock::now();
     
     std::cout << "sort time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << "ms" << std::endl;
